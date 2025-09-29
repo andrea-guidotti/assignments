@@ -1,4 +1,22 @@
+from matplotlib import pyplot as plt
 import os
+import argparse
+import time
+
+parser = argparse.ArgumentParser(
+    prog="lettersCounter",
+    description="Counts the relative frequency of letters in a text",
+    epilog= "enjoy!")
+parser.add_argument("file", help = "input file to be analyze")
+
+parser.add_argument(
+     "-p", 
+     "--plot",
+     action="store_true", 
+     help="Show histogram of letter frequencies")
+
+args = parser.parse_args()
+path = args.file
 
 # List of letters of the alphabet to count
 letters = "abcdefghijklmnopqrstuvwxyz"
@@ -10,7 +28,9 @@ for letter in letters:
     letter_counts[letter] = 0
 
 # Open the text file in read mode with UTF-8 encoding
-with open("test.txt", "r", encoding="UTF-8") as file:
+
+counter = 0
+with open(f"{path}", "r", encoding="UTF-8") as file:
     # Read the file line by line
     for line in file:
         # Remove spaces and convert the line to lowercase
@@ -20,4 +40,20 @@ with open("test.txt", "r", encoding="UTF-8") as file:
             # Update the count only if the character is a letter in the alphabet
             if char in letter_counts:
                 letter_counts[char] += 1
+
+totalCounter = sum(letter_counts.value())
+
+print( "Here the letter frequencies: \n")
+for letter in letters:
+    print(f"{letter}: {letter_counts[letter]/totalCounter}\n")
+if args.plot:
+    plt.bar(letter_counts.keys,letter_counts.values,)
+    plt.xlabel("Letters")
+    plt.ylabel("Occurrences")
+    plt.title("Letter Histogram")
+    plt.show()
+
+      
+
+
 
