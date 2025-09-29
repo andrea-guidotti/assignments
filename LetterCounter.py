@@ -58,7 +58,3 @@ if args.plot:
     plt.title("Letter Histogram")
     plt.show()
 
-      
-
-
-
