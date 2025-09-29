@@ -3,12 +3,13 @@ import os
 import argparse
 import time
 
+# Set command line inputs to avoid hardcoding 
 parser = argparse.ArgumentParser(
     prog="lettersCounter",
     description="Counts the relative frequency of letters in a text",
     epilog= "enjoy!")
-parser.add_argument("file", help = "input file to be analyze")
 
+parser.add_argument("file", help = "input file to be analyze")
 parser.add_argument(
      "-p", 
      "--plot",
@@ -28,8 +29,6 @@ for letter in letters:
     letter_counts[letter] = 0
 
 # Open the text file in read mode with UTF-8 encoding
-
-counter = 0
 with open(f"{path}", "r", encoding="UTF-8") as file:
     # Read the file line by line
     for line in file:
@@ -41,13 +40,19 @@ with open(f"{path}", "r", encoding="UTF-8") as file:
             if char in letter_counts:
                 letter_counts[char] += 1
 
-totalCounter = sum(letter_counts.value())
+# Compute total letters in text to extract frequencies
+totalCounter = sum(letter_counts.values())
 
-print( "Here the letter frequencies: \n")
-for letter in letters:
-    print(f"{letter}: {letter_counts[letter]/totalCounter}\n")
+# Initialize a dictionary to store relative frequencies
+freq = {key: count/totalCounter for key, count in letter_counts.items()}
+
+print( "Here the letters' frequencies: \n")
+for letter, frequency in freq.items():
+    print(f"{letter}: {frequency}\n")
+
+# Plot Histograf if requested from command line 
 if args.plot:
-    plt.bar(letter_counts.keys,letter_counts.values,)
+    plt.bar(letter_counts.keys(),letter_counts.values(),)
     plt.xlabel("Letters")
     plt.ylabel("Occurrences")
     plt.title("Letter Histogram")
