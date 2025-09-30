@@ -3,6 +3,8 @@ import os
 import argparse
 import time
 
+# Set starting point to measure execution time
+start = time.time()
 # Set command line inputs to avoid hardcoding 
 parser = argparse.ArgumentParser(
     prog="lettersCounter",
@@ -48,7 +50,13 @@ freq = {key: count/totalCounter for key, count in letter_counts.items()}
 
 print( "Here the letters' frequencies: \n")
 for letter, frequency in freq.items():
-    print(f"{letter}: {frequency}\n")
+    print(f"{letter}: {frequency:.4f}\n")
+
+# Set ending point and compute execution time 
+end = time.time()
+execution_time = end - start
+
+print(f"Execution time: {execution_time:.4f} seconds")
 
 # Plot Histograf if requested from command line 
 if args.plot:
@@ -57,4 +65,3 @@ if args.plot:
     plt.ylabel("Occurrences")
     plt.title("Letter Histogram")
     plt.show()
-
