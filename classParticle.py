@@ -1,18 +1,30 @@
 import math
 
 class Particle:
+    """Class to store  particles' data in natural units (c=1)"""
 
     def __init__(self, name, mass, charge, momentum = 0):
-
-        self._name = name
+        """Attributes of the class:
+        -name of the particle 
+        -mass in MeV
+        -charge in units of e
+        -momentum [optional] in Mev
+        """
+        self._name = name 
         self._mass = mass
         self._charge = charge
-        self.momentum = momentum #Mev 
+        self.momentum = momentum 
 
+    # Encapsulation: make attributes private and 
+    # provide property/setter to access and control them
     @property   
     def name(self):
         return self._name
     
+    @property   
+    def mass(self):
+        return self._mass
+        
     @property   
     def charge(self):
         return self._charge
@@ -22,43 +34,57 @@ class Particle:
         return self._momentum
     
     @momentum.setter
-    def momentum(self,momentum):
-        if momentum < 0:
+    def momentum(self, value):
+        if value < 0:
             print("Momentum must be positive")
             print("It will be set to zero instead")
             self._momentum = 0
         else:
-            self._momentum = momentum
+            self._momentum = value
 
     @property   
-    def mass(self):
-        return self._mass
-    
-    @property   
-    def energy(self):
-        # Using natural units c = 1
-        return math.sqrt(self.mass **2 +self.momentum**2)
+    def energy(self): 
+        """Using Einstein formula E = sqrt (m^2 + p^2)"""
+        return math.sqrt(self.mass**2 + self.momentum**2)
     
     @energy.setter
-    def energy(self, energy):
-        if energy < self.mass:
+    def energy(self, value):
+        if value < self.mass:
             print(f"Cannot set energy value to a value lower than the particle mass {self.mass}")
         else:
-            self.momentum = math.sqrt(self.energy**2 - self.mass**2) 
+            self.momentum = math.sqrt(value**2 - self.mass**2) 
 
     @property
     def beta(self):
         return self.momentum / self.energy
     
     @beta.setter
-    def beta(self, beta):
-        if (beta <0 or beta > 1):
+    def beta(self, value):
+        if (value <0 or value > 1):
             print("Invalid Input: beta must take a value between 0 and 1 ")
+        elif (value == 1 and self.mass != 0):
+            print("Only massless particles can have Beta = 1")   
         else:
-            self.momentum = beta * self.mass / math.sqrt(1-beta**2)
+            self.momentum = value * self.mass / math.sqrt(1 - value**2)
 
-    def print_info(self):
-        print(f"Particle: {self.name}, mass: {self.mass}, charge: {self.charge}, momentum: {self.momentum}")
+    """Print particle information in a readable format"""
+    def info(self):
+        print(f"Particle: {self.name}, mass: {self.mass} Mev, charge: {self.charge} e, momentum: {self.momentum:.2f} Mev")
+
+#inheritance of Particle class and use class attributes 
+class Proton(Particle):
+    NAME = "Proton"
+    MASS = 938.3 #Mev
+    CHARGE = +1 #e
+    def __init__(self,momentum=0):
+        super().__init__(self.NAME,self.MASS, self.CHARGE, momentum)
+
+class Alfa(Particle):
+    NAME = "Alfa"
+    MASS = 3727.3 #Mev
+    CHARGE = +4 #e
+    def __init__(self,momentum=0):
+        super().__init__(self.NAME,self.MASS, self.CHARGE, momentum)        
 
 
 
@@ -66,7 +92,11 @@ class Particle:
 
 
 muon = Particle(name = "Muon", mass = 105.6, charge = -1, momentum=-100)
-print(muon.energy)
-muon.print_info()
+muon.info()
+muon.beta = 1
+muon.beta = 0.5
+muon.info()
 muon.momentum = -100
 
+p = Proton()
+p.info()
