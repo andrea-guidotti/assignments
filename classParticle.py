@@ -6,13 +6,8 @@ class Particle:
 
         self._name = name
         self._mass = mass
-        self._charge = charge 
-        if momentum < 0:
-            print("Momentum must be positive")
-            print("it will be set to zero instead")
-            self.momentum = 0
-        else:    
-            self._momentum = momentum #Mev 
+        self._charge = charge
+        self.momentum = momentum #Mev 
 
     @property   
     def name(self):
@@ -30,9 +25,11 @@ class Particle:
     def momentum(self,momentum):
         if momentum < 0:
             print("Momentum must be positive")
+            print("It will be set to zero instead")
+            self._momentum = 0
         else:
-            self._momentum = momentum  
-    
+            self._momentum = momentum
+
     @property   
     def mass(self):
         return self._mass
@@ -49,6 +46,17 @@ class Particle:
         else:
             self.momentum = math.sqrt(self.energy**2 - self.mass**2) 
 
+    @property
+    def beta(self):
+        return self.momentum / self.energy
+    
+    @beta.setter
+    def beta(self, beta):
+        if (beta <0 or beta > 1):
+            print("Invalid Input: beta must take a value between 0 and 1 ")
+        else:
+            self.momentum = beta * self.mass / math.sqrt(1-beta**2)
+
     def print_info(self):
         print(f"Particle: {self.name}, mass: {self.mass}, charge: {self.charge}, momentum: {self.momentum}")
 
@@ -57,7 +65,8 @@ class Particle:
 #######################
 
 
-muon = Particle(name = "Muon", mass = 105.6, charge = -1)
+muon = Particle(name = "Muon", mass = 105.6, charge = -1, momentum=-100)
 print(muon.energy)
 muon.print_info()
 muon.momentum = -100
+
