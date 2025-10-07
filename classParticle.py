@@ -4,6 +4,7 @@ class Particle:
     """Class to store  particles' data in natural units (c=1)"""
 
     def __init__(self, name, mass, charge, momentum = 0):
+
         """Attributes of the class:
         -name of the particle 
         -mass in MeV
@@ -71,7 +72,7 @@ class Particle:
     def info(self):
         print(f"Particle: {self.name}, mass: {self.mass} Mev, charge: {self.charge} e, momentum: {self.momentum:.2f} Mev")
 
-#inheritance of Particle class and use class attributes 
+#Inheritance of Particle class and use class attributes 
 class Proton(Particle):
     NAME = "Proton"
     MASS = 938.3 #Mev
@@ -91,6 +92,8 @@ class Alfa(Particle):
 #######################
 
 
+
+# Testing Particle and Proton classes
 muon = Particle(name = "Muon", mass = 105.6, charge = -1, momentum=-100)
 muon.info()
 muon.beta = 1
